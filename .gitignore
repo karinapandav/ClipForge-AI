@@ -1,0 +1,18 @@
+# Virtual environment
+.venv/
+
+# Environment variables / API keys
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Generated outputs
+outputs/*.mp4
+
+# IDE
+.vscode/
+.idea/
+
+sample/*.mp4
