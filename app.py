@@ -95,13 +95,13 @@ if uploaded_file is not None:
         with col1:
             st.metric(
                 "Viral Score",
-                f"{result['score']}/10"
+                f"{result['clip']['score']}/10"
             )
 
         with col2:
             duration = (
-                result["end_time"]
-                - result["start_time"]
+                result["clip"]["end_time"]
+                - result["clip"]["start_time"]
             )
 
             st.metric(
@@ -111,11 +111,11 @@ if uploaded_file is not None:
 
         st.subheader("Hook")
 
-        st.info(result["hook"])
+        st.info(result["clip"]["hook"])
 
         st.subheader("Why this clip?")
 
-        st.write(result["reason"])
+        st.write(result["clip"]["reason"])
 
         # --------------------------------------------------
         # FINAL VIDEO
