@@ -1,3 +1,5 @@
+import os
+
 from src.transcription import transcribe_video
 from src.clip_selector import select_best_clip
 from src.subtitles import create_ass_subtitles
@@ -8,93 +10,99 @@ from src.video_processor import (
 )
 
 
-def generate_short(video_path: str):
+def generate_short(input_path: str):
     """
-    Run the complete ClipForge pipeline.
+    Run the complete ClipForge AI pipeline.
 
     Video
-        ↓
+      ↓
     Transcription
-        ↓
+      ↓
     AI clip selection
-        ↓
-    Video trimming
-        ↓
+      ↓
+    Trim
+      ↓
     Vertical conversion
-        ↓
-    Subtitle generation
-        ↓
-    Caption burning
+      ↓
+    ASS subtitles
+      ↓
+    Burn subtitles
+      ↓
+    Final short
     """
 
-    print("\n=== CLIPFORGE AI PIPELINE ===\n")
+    os.makedirs("outputs", exist_ok=True)
 
     # --------------------------------------------------
-    # 1. TRANSCRIPTION
+    # STEP 1 — TRANSCRIPTION
     # --------------------------------------------------
 
-    print("[1/6] Transcribing video...")
+    print("Step 1: Transcribing video...")
 
-    transcript = transcribe_video(video_path)
+    transcript = transcribe_video(input_path)
 
-    print("✓ Transcription complete")
+    print("Transcription complete.")
 
     # --------------------------------------------------
-    # 2. AI CLIP SELECTION
+    # STEP 2 — AI CLIP SELECTION
     # --------------------------------------------------
 
-    print("\n[2/6] Asking AI to select the best clip...")
+    print("Step 2: Selecting best clip with AI...")
 
     clip = select_best_clip(transcript)
 
     start_time = clip["start_time"]
     end_time = clip["end_time"]
 
-    print("✓ Clip selected")
-    print(f"  Start: {start_time:.2f}s")
-    print(f"  End:   {end_time:.2f}s")
-    print(f"  Score: {clip['score']}/10")
-    print(f"  Hook:  {clip['hook']}")
+    print(
+        f"Selected clip: "
+        f"{start_time:.2f}s → {end_time:.2f}s"
+    )
 
     # --------------------------------------------------
-    # 3. TRIM VIDEO
+    # STEP 3 — TRIM VIDEO
     # --------------------------------------------------
 
-    trimmed_path = "outputs/selected_clip.mp4"
+    trimmed_path = os.path.join(
+        "outputs",
+        "selected_clip.mp4"
+    )
 
-    print("\n[3/6] Trimming video...")
+    print("Step 3: Trimming video...")
 
     trim_video(
-        input_path=video_path,
+        input_path=input_path,
         output_path=trimmed_path,
         start_time=start_time,
         end_time=end_time
     )
 
-    print("✓ Clip trimmed")
-
     # --------------------------------------------------
-    # 4. CONVERT TO VERTICAL
+    # STEP 4 — CONVERT TO 9:16
     # --------------------------------------------------
 
-    vertical_path = "outputs/vertical.mp4"
+    vertical_path = os.path.join(
+        "outputs",
+        "vertical_clip.mp4"
+    )
 
-    print("\n[4/6] Converting to 9:16...")
+    print("Step 4: Converting to vertical...")
 
     convert_to_vertical(
         input_path=trimmed_path,
         output_path=vertical_path
     )
 
-    print("✓ Vertical video created")
-
     # --------------------------------------------------
-    # 5. GENERATE SUBTITLES
+    # STEP 5 — CREATE ASS SUBTITLES
     # --------------------------------------------------
 
-    subtitle_path = "outputs/captions.ass"
+    subtitle_path = os.path.join(
+        "outputs",
+        "captions.ass"
+    )
 
-    print("\n[5/6] Generating captions...")
+    print("Step 5: Creating subtitles...")
 
     create_ass_subtitles(
         transcript=transcript,
@@ -103,15 +111,16 @@ def generate_short(video_path: str):
         output_path=subtitle_path
     )
 
-    print("✓ ASS subtitles created")
-
     # --------------------------------------------------
-    # 6. BURN SUBTITLES
+    # STEP 6 — BURN SUBTITLES
     # --------------------------------------------------
 
-    final_path = "outputs/final_short.mp4"
+    final_path = os.path.join(
+        "outputs",
+        "final_short.mp4"
+    )
 
-    print("\n[6/6] Burning captions into video...")
+    print("Step 6: Burning subtitles...")
 
     burn_subtitles(
         input_path=vertical_path,
@@ -119,16 +128,14 @@ def generate_short(video_path: str):
         output_path=final_path
     )
 
-    print("✓ Final video created")
-
-    print("\n=== PIPELINE COMPLETE ===")
-    print(f"Output: {final_path}")
+    print()
+    print("=" * 60)
+    print("CLIPFORGE PIPELINE COMPLETE")
+    print("=" * 60)
+    print(f"Final video: {final_path}")
 
     return {
-        "video_path": final_path,
-        "start_time": start_time,
-        "end_time": end_time,
-        "score": clip["score"],
-        "hook": clip["hook"],
-        "reason": clip["reason"]
+        "transcript": transcript,
+        "clip": clip,
+        "video_path": final_path
     }

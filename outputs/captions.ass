@@ -10,9 +10,9 @@ Style: Default,Arial,60,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,1,0,0,0,100,
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
-Dialogue: 0,0:00:00.00,0:00:14.12,Default,,0,0,0,,3
-Dialogue: 0,0:00:14.12,0:00:26.02,Default,,0,0,0,,8
-Dialogue: 0,0:00:26.02,0:00:28.98,Default,,0,0,0,,अपणीप वपाफि तो और वहा प़्ादें
-Dialogue: 0,0:00:28.98,0:00:31.24,Default,,0,0,0,,पिताफ हली वचें प़्े हो करती वचे
-Dialogue: 0,0:00:31.24,0:00:32.34,Default,,0,0,0,,प़्ाफिडा।
-Dialogue: 0,0:00:32.34,0:00:34.30,Default,,0,0,0,,फिवै अपाफिवा फिवे भे वचें
+Dialogue: 0,0:00:00.00,0:00:09.76,Default,,0,0,0,,If you want to change the world, start off by making your bed.
+Dialogue: 0,0:00:09.76,0:00:15.28,Default,,0,0,0,,If you make your bed every morning, you will have accomplished the first task of the day.
+Dialogue: 0,0:00:15.28,0:00:20.20,Default,,0,0,0,,It will give you a small sense of pride, and it will encourage you to do another task,
+Dialogue: 0,0:00:20.20,0:00:22.64,Default,,0,0,0,,and another, and another.
+Dialogue: 0,0:00:22.64,0:00:27.48,Default,,0,0,0,,And by the end of the day, that one task completed will have turned into many tasks completed.
+Dialogue: 0,0:00:27.48,0:00:32.48,Default,,0,0,0,,And your bed will also reinforce the fact that the little things in life matter.
