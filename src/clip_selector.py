@@ -84,8 +84,24 @@ Timestamped transcript:
     if not content:
         raise ValueError("LLM returned an empty response.")
 
+    # Remove Markdown code fences if the model adds them
+    content = content.strip()
+
+    if content.startswith("```"):
+        lines = content.splitlines()
+
+        # Remove the opening ```json / ```
+        lines = lines[1:]
+
+        # Remove the closing ```
+        if lines and lines[-1].strip() == "```":
+            lines = lines[:-1]
+
+        content = "\n".join(lines).strip()
+
     try:
         result = json.loads(content)
+
     except json.JSONDecodeError:
         raise ValueError(
             f"LLM returned invalid JSON:\n{content}"

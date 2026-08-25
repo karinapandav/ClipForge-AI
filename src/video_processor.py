@@ -8,7 +8,7 @@ def trim_video(
     end_time: float
 ):
     """
-    Extract a segment from the original video.
+    Extract the selected segment from the original video.
     """
 
     duration = end_time - start_time
@@ -34,7 +34,7 @@ def convert_to_vertical(
     output_path: str
 ):
     """
-    Convert a video to 9:16 using center cropping.
+    Convert the video to 9:16 using center cropping.
     """
 
     command = [
@@ -44,6 +44,39 @@ def convert_to_vertical(
 
         "-vf",
         "crop=ih*9/16:ih,scale=1080:1920",
+
+        "-c:v", "libx264",
+        "-preset", "fast",
+        "-crf", "23",
+
+        "-c:a", "aac",
+
+        output_path
+    ]
+
+    subprocess.run(command, check=True)
+
+    return output_path
+
+
+def burn_subtitles(
+    input_path: str,
+    subtitle_path: str,
+    output_path: str
+):
+    """
+    Burn ASS subtitles directly into the video.
+    """
+
+    subtitle_path = subtitle_path.replace("\\", "/").replace(":", "\\:")
+
+    command = [
+        "ffmpeg",
+        "-y",
+        "-i", input_path,
+
+        "-vf",
+        f"ass='{subtitle_path}'",
 
         "-c:v", "libx264",
         "-preset", "fast",
